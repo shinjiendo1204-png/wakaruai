@@ -2,7 +2,7 @@
 
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
-import { Calendar, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Calendar, ArrowLeft, ExternalLink, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
@@ -77,6 +77,15 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
           原文をフルで読む(外部サイト)<ExternalLink size={20} />
         </a>
       </div>
+       <footer className="mt-24 p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-slate-400">
+        <div className="flex items-start gap-4 text-xs leading-relaxed">
+          <AlertCircle size={18} className="shrink-0 mt-0.5 text-slate-300" />
+          <div>
+            <p className="font-bold mb-1 text-slate-500">免責事項</p>
+            <p>本ページの記事内容は、AIによって自動的に抽出・要約されたものです。</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
