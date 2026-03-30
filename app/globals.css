@@ -1,9 +1,13 @@
+/* globals.css の一番上 */
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
+
+/* ...残りの設定はそのままでOK */
 
 @theme inline {
   --color-background: var(--background);
