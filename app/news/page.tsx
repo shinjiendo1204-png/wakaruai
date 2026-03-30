@@ -39,63 +39,73 @@ export default function NewsPage() {
     } catch { return 'SOURCE'; }
   };
 
-  // 1. 初回：ニュースが存在する「日付リスト」だけを取得
-  useEffect(() => {
-    async function fetchDateList() {
-      const { data } = await supabase
-        .from('ai_news')
-        .select('created_at')
-        .eq('is_published', true)
-        .order('created_at', { ascending: false });
+  // 修正版：ボタン用日付リストの抽出
+useEffect(() => {
+  async function fetchDateList() {
+    const { data } = await supabase
+      .from('ai_news')
+      .select('created_at')
+      .eq('is_published', true)
+      .order('created_at', { ascending: false });
 
-      if (data) {
-        // 重複を除いた YYYY-MM-DD 形式のリストを作成
-        const dates = Array.from(new Set(data.map(item => 
-          new Date(item.created_at).toISOString().split('T')[0]
-        )));
-        setAvailableDates(dates);
-        
-        // 初回アクセス時は最新の日付を選択状態にする
-        if (dates.length > 0) {
-          setActiveDate(dates[0]);
-        }
+    if (data) {
+      const dates = Array.from(new Set(data.map(item => {
+        // toISOString() ではなく、日本の日付文字列(YYYY-MM-DD)を取得する
+        const d = new Date(item.created_at);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      })));
+      
+      setAvailableDates(dates);
+      
+      // まだ activeDate がセットされていない場合、最新の日付をセット
+      if (dates.length > 0 && (activeDate === 'All' || activeDate === '')) {
+        setActiveDate(dates[0]);
       }
     }
-    fetchDateList();
-  }, []);
+  }
+  fetchDateList();
+}, []);
 
   // 2. activeDate が変わるたびに、その日のニュースをDBから取得
-  useEffect(() => {
-    if (!activeDate) return;
+  // 修正版：その日のニュースを日本時間で正しく取得する
+useEffect(() => {
+  if (!activeDate) return;
 
-    async function fetchNewsByDate() {
-      setLoading(true);
-      setActiveTag('All'); // 日付を変えたらタグ絞り込みをリセット
+  async function fetchNewsByDate() {
+    setLoading(true);
+    
+    // 検索範囲：その日の 00:00:00 から 23:59:59 まで
+    // 日本時間(JST)で判定するために、時刻指定を外して日付文字列だけで比較するか、
+    // 以下のように 00:00:00+09 と明示的に指定します。
+    const start = `${activeDate}T00:00:00+09:00`;
+    const end = `${activeDate}T23:59:59+09:00`;
 
-      let query = supabase
-        .from('ai_news')
-        .select('*')
-        .eq('is_published', true)
-        .order('created_at', { ascending: false });
+    let query = supabase
+      .from('ai_news')
+      .select('*')
+      .eq('is_published', true)
+      .order('created_at', { ascending: false });
 
-      if (activeDate !== 'All') {
-        const start = `${activeDate}T00:00:00.000Z`;
-        const end = `${activeDate}T23:59:59.999Z`;
-        query = query.gte('created_at', start).lte('created_at', end);
-      }
-
-      const { data, error } = await query;
-      
-      if (!error && data) {
-        setNews(data);
-        const tags = Array.from(new Set(data.flatMap((item: any) => item.tags || [])));
-        setAllTags(['All', ...tags]);
-      }
-      setLoading(false);
+    if (activeDate !== 'All') {
+      // gte = Greater Than or Equal (以上) / lte = Less Than or Equal (以下)
+      query = query.gte('created_at', start).lte('created_at', end);
     }
 
-    fetchNewsByDate();
-  }, [activeDate]);
+    const { data, error } = await query;
+    
+    if (!error && data) {
+      setNews(data);
+      const tags = Array.from(new Set(data.flatMap((item: any) => item.tags || [])));
+      setAllTags(['All', ...tags]);
+    }
+    setLoading(false);
+  }
+
+  fetchNewsByDate();
+}, [activeDate]);
 
   // タグによるフロントエンドでの絞り込み
   const displayNews = activeTag === 'All' 
