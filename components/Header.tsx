@@ -21,11 +21,17 @@ export default function Header() {
         animate={{ y: 0, opacity: 1 }}
         className="flex items-center gap-2 px-6 py-3 bg-white/80 backdrop-blur-lg border border-slate-200 rounded-full shadow-lg shadow-slate-100"
       >
-        {/* ロゴ */}
+       {/* ロゴ */}
         <Link href="/" className="flex items-center gap-2 mr-4 group">
-          <div className="bg-blue-600 p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
-            <Search size={20} className="text-white" />
+           <div className="bg-white p-0.5 rounded-lg border border-slate-200 group-hover:rotate-12 transition-transform overflow-hidden w-8 h-8 flex items-center justify-center">
+            {/* 虫眼鏡アイコンを img タグに差し替え */}
+            <img 
+              src="/favicon.jpg" // publicフォルダに置いた画像パス
+              alt="ワカルAI ロゴ"
+              className="w-full h-full object-cover rounded-md" 
+            />
           </div>
+          
           <span className="font-black text-xl tracking-tighter text-slate-900">
             ワカル<span className="text-blue-600">AI</span>
           </span>
