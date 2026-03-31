@@ -12,7 +12,7 @@ export default function Header() {
   const navItems = [
     { name: 'AI診断', href: '/diagnostic', icon: <Sparkles size={18} /> },
     { name: 'ツール一覧', href: '/tools', icon: <LayoutGrid size={18} /> },
-    { name: '世界の三行AIニュース', href: '/news', icon: <Newspaper size={18} /> },
+    { name: '世界のAI三行ニュース', href: '/news', icon: <Newspaper size={18} /> },
     { name: 'Podcastテック要約', href: '/podcasts', icon: <Mic2 size={18} /> },
   ];
 

@@ -72,23 +72,35 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* フッターリンク */}
-      <div className="border-t border-slate-100 pt-16 text-center">
-        <p className="text-slate-400 text-sm font-bold mb-6">より詳しい情報は公式サイトをご確認ください</p>
+     {/* フッターリンクとナビゲーション */}
+      <div className="border-t border-slate-100 pt-16 mt-20 flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        {/* 左側：メインアクション（原文へ） */}
         <a 
           href={post.source_url.split('?')[0]} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-2xl font-black hover:bg-slate-900 transition-all shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95"
+          className="w-full md:w-auto inline-flex items-center justify-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-[2rem] font-black hover:bg-slate-900 transition-all shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95"
         >
           原文をフルで読む(外部サイト)<ExternalLink size={20} />
         </a>
+
+        {/* 右側：サブアクション（一覧に戻る） */}
+        <Link 
+          href="/news" 
+          className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white text-slate-400 border-2 border-slate-100 px-10 py-5 rounded-[2rem] font-black hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition-all group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          ニュース一覧に戻る
+        </Link>
+        
       </div>
        <footer className="mt-24 p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-slate-400">
         <div className="flex items-start gap-4 text-xs leading-relaxed">
           <AlertCircle size={18} className="shrink-0 mt-0.5 text-slate-300" />
           <div>
             <p className="font-bold mb-1 text-slate-500">免責事項</p>
-            <p>本ページの記事内容は、AIによって自動的に抽出・要約されたものです。</p>
+            <p>本ページの記事内容は、AIによって要約を行い、手動でまとめたものです。</p>
           </div>
         </div>
       </footer>

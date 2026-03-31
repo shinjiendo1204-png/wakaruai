@@ -236,6 +236,20 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ id:
             </div>
           </div>
         </div>
+
+        {/* --- ★追加：フッターナビゲーション --- */}
+      <div className="mt-20 pt-12 border-t-2 border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+
+        {/* 右側：一覧に戻る（サブ） */}
+        <Link 
+          href="/tools" 
+          className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white text-slate-400 border-2 border-slate-100 px-10 py-6 rounded-[2rem] font-black hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition-all group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          ツール一覧に戻る
+        </Link>
+        
+      </div>
       </div>
     </div>
   );

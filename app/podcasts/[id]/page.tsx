@@ -86,14 +86,14 @@ export default async function PodcastDetailPage({ params }: { params: Promise<{ 
 
       {/* 5. フッター：元動画へのリンクボタン */}
       <div className="pt-12 border-t-2 border-slate-100">
-        <a 
-          href={post.url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="inline-flex items-center gap-2 bg-slate-900 text-white px-10 py-5 rounded-full font-black hover:bg-blue-600 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-blue-100"
+        {/* 右側：一覧に戻るボタン（ナビゲーション） */}
+        <Link 
+          href="/podcasts" 
+          className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-slate-100 text-slate-500 px-10 py-5 rounded-full font-black hover:bg-slate-200 hover:text-slate-900 transition-all group"
         >
-          YouTubeで元のPodcastを見る <ExternalLink size={20} />
-        </a>
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          記事一覧へ戻る
+        </Link>
       </div>
 
     </article>
