@@ -11,7 +11,7 @@ export default function Footer() {
             <Link href="/" className="font-black text-xl tracking-tighter text-slate-900 mb-2">
               ワカル<span className="text-blue-600">AI</span>
             </Link>
-            <p className="text-xs text-slate-400 font-bold">世界一やさしいAIニュースサイト</p>
+            <p className="text-xs text-slate-400 font-bold">世界一分かりやすいAI総合プラットフォーム</p>
           </div>
 
           {/* リンク集 */}

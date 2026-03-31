@@ -1,8 +1,9 @@
-// app/news/[id]/page.tsx
-
 import { supabase } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
-import { Calendar, ArrowLeft, ExternalLink, AlertCircle } from 'lucide-react';
+import { 
+  Calendar, ArrowLeft, ExternalLink, AlertCircle, 
+  BookOpen, ChevronRight, LayoutGrid, Mic2, Sparkles 
+} from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
+  // 1. メインニュースを取得
   const { data: post } = await supabase
     .from('ai_news')
     .select('*')
@@ -19,17 +21,32 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
 
   if (!post) notFound();
 
+  // 2. 同じ日の他のニュースを取得
+  const dateStr = new Date(post.created_at).toISOString().split('T')[0];
+  const { data: siblingNews } = await supabase
+    .from('ai_news')
+    .select('id, title')
+    .eq('is_published', true)
+    .neq('id', id)
+    .gte('created_at', `${dateStr}T00:00:00+09:00`)
+    .lte('created_at', `${dateStr}T23:59:59+09:00`)
+    .limit(3);
+
+  // 除外したいノイズタグのリスト
+  const noiseTags = ['Chinese', '36Kr', 'Technology', 'News', 'Trending', 'AI'];
+  const validTags = post.tags?.filter((tag: string) => !noiseTags.includes(tag)) || [];
+
   return (
-    <div className="max-w-3xl mx-auto px-6 py-12 pb-24 animate-in fade-in duration-700">
+    <div className="max-w-3xl mx-auto px-6 py-12 pb-32 animate-in fade-in duration-700">
       {/* 戻るボタン */}
-      <Link href="/news" className="inline-flex items-center gap-2 text-slate-400 font-bold mb-12 hover:text-blue-600 transition-all hover:-translate-x-1">
-        <ArrowLeft size={20} /> ニュース一覧へ戻る
+      <Link href="/news" className="inline-flex items-center gap-2 text-slate-400 font-black mb-12 hover:text-blue-600 transition-all hover:-translate-x-1 group">
+        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> ニュース一覧へ戻る
       </Link>
 
       {/* カテゴリと日付 */}
       <div className="flex items-center gap-4 mb-6">
-        <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider">
-          {post.tags?.[0] || 'AI'}
+        <span className="bg-blue-600 text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-lg shadow-blue-200">
+          {post.tags?.[0] || 'AI NEWS'}
         </span>
         <span className="text-slate-400 text-xs font-bold flex items-center gap-1">
           <Calendar size={14} /> {new Date(post.created_at).toLocaleDateString('ja-JP')}
@@ -43,7 +60,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
         </span>
       </h1>
 
-      {/* 3行要約ボックス（デザイン強化版） */}
+      {/* 3行要約ボックス */}
       <div className="bg-slate-900 text-white p-8 md:p-10 rounded-[2.5rem] mb-16 shadow-2xl shadow-blue-500/20 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full -mr-16 -mt-16"></div>
         <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-6 border-b border-white/10 pb-4">Quick Summary</p>
@@ -57,35 +74,36 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
         </ul>
       </div>
 
-      {/* 詳細解説コンテンツ（Typography適用） */}
+      {/* 詳細解説コンテンツ */}
       <div className="prose prose-slate prose-lg max-w-none mb-20 
         prose-headings:font-black prose-headings:text-slate-900
         prose-h2:text-2xl prose-h2:border-l-4 prose-h2:border-blue-600 prose-h2:pl-4 prose-h2:mb-6
-        prose-h3:text-xl prose-h3:mt-10
         prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium
-        prose-strong:text-slate-900 prose-strong:font-black
-        prose-img:rounded-[2rem] prose-img:shadow-2xl
-        prose-blockquote:border-l-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:font-bold
-        prose-code:text-blue-600 prose-code:bg-blue-50 prose-code:px-1 prose-code:rounded
-          ">
+        prose-blockquote:border-l-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:font-bold">
         <ReactMarkdown>{post.content_jp?.replace(/\\n/g, '\n')}</ReactMarkdown>
       </div>
 
-      {/* フッターリンク */}
-     {/* フッターリンクとナビゲーション */}
-      <div className="border-t border-slate-100 pt-16 mt-20 flex flex-col md:flex-row items-center justify-between gap-6">
-        
-        {/* 左側：メインアクション（原文へ） */}
-        <a 
-          href={post.source_url.split('?')[0]} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="w-full md:w-auto inline-flex items-center justify-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-[2rem] font-black hover:bg-slate-900 transition-all shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95"
-        >
-          原文をフルで読む(外部サイト)<ExternalLink size={20} />
-        </a>
+      {/* 今日の他のニュース */}
+      {siblingNews && siblingNews.length > 0 && (
+        <div className="mb-20">
+          <h3 className="text-slate-400 font-black text-xs uppercase tracking-[0.3em] mb-8 flex items-center gap-4">
+            <div className="h-px bg-slate-100 flex-grow"></div>
+              今日の他のニュース
+            <div className="h-px bg-slate-100 flex-grow"></div>
+          </h3>
+          <div className="space-y-4">
+            {siblingNews.map((news) => (
+              <Link key={news.id} href={`/news/${news.id}`} className="group flex items-center justify-between p-6 bg-white border border-slate-100 rounded-2xl hover:border-blue-200 hover:shadow-xl transition-all">
+                <p className="font-black text-slate-800 group-hover:text-blue-600 transition-colors">{news.title}</p>
+                <ChevronRight size={20} className="text-slate-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
-        {/* 右側：サブアクション（一覧に戻る） */}
+      {/* フッターリンクとナビゲーション */}
+      <div className="border-t border-slate-100 pt-16 flex flex-col md:flex-row items-center justify-between gap-6">
         <Link 
           href="/news" 
           className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-white text-slate-400 border-2 border-slate-100 px-10 py-5 rounded-[2rem] font-black hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition-all group"
@@ -93,9 +111,17 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           ニュース一覧に戻る
         </Link>
-        
+        <a 
+          href={post.source_url.split('?')[0]} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="w-full md:w-auto inline-flex items-center justify-center gap-3 bg-blue-600 text-white px-10 py-5 rounded-[2rem] font-black hover:bg-slate-900 transition-all shadow-xl shadow-blue-500/20 hover:scale-105 active:scale-95"
+        >
+          原文ソースを確認する(外部サイト)<ExternalLink size={20} />
+        </a>
       </div>
-       <footer className="mt-24 p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-slate-400">
+
+      <footer className="mt-24 p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-slate-400">
         <div className="flex items-start gap-4 text-xs leading-relaxed">
           <AlertCircle size={18} className="shrink-0 mt-0.5 text-slate-300" />
           <div>

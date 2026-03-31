@@ -12,7 +12,7 @@ export default function Header() {
   const navItems = [
     { name: 'AI診断', shortName: '診断', href: '/diagnostic', icon: <Sparkles size={18} /> },
     { name: 'ツール一覧', shortName: 'ツール', href: '/tools', icon: <LayoutGrid size={18} /> },
-    { name: '三行ニュース', shortName: 'ニュース', href: '/news', icon: <Newspaper size={18} /> },
+    { name: 'AI三行ニュース', shortName: 'ニュース', href: '/news', icon: <Newspaper size={18} /> },
     { name: 'Podcast要約', shortName: 'Podcast', href: '/podcasts', icon: <Mic2 size={18} /> },
     // ★新しく追加：AI用語辞典
     { name: 'AI用語辞典', shortName: '辞典', href: '/glossary', icon: <BookOpen size={18} /> },
