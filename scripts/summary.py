@@ -1,5 +1,6 @@
 import os
 import math
+import re
 from pathlib import Path
 from yt_dlp import YoutubeDL
 from openai import OpenAI
@@ -8,25 +9,26 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 
 # --- 1. .env の読み込み設定 ---
-# 自分のファイル(summary.py)の場所から見て、1つ上の階層にある .env を指定
+# scriptsフォルダの1つ上の階層にある .env.local を読み込む
 env_path = Path(__file__).resolve().parent.parent / '.env.local'
 load_dotenv(dotenv_path=env_path)
 
-# --- 2. 読み込みチェック（デバッグ用：動いたら消してOK） ---
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    print(f"❌ エラー: .env が見つからないか、中身が空です。")
+# --- 2. 初期設定とバリデーション ---
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+SUPABASE_URL = os.getenv("NEXT_PUBLIC_SUPABASE_URL")
+SUPABASE_KEY = os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+
+if not OPENAI_API_KEY or not SUPABASE_URL or not SUPABASE_KEY:
+    print(f"❌ エラー: 環境変数が読み込めませんでした。")
     print(f"探した場所: {env_path}")
     exit()
 
-# --- 3. 道具の準備 ---
-client = OpenAI(api_key=api_key)
-supabase: Client = create_client(
-    os.getenv("NEXT_PUBLIC_SUPABASE_URL"), 
-    os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
-)
-# 4. 関数の定義
-def download_audio(youtube_url): # 👈 名前を download_audio に修正
+client = OpenAI(api_key=OPENAI_API_KEY)
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# --- 3. 関数の定義 ---
+
+def download_audio(youtube_url):
     """YouTubeから音声を抽出・圧縮する"""
     print(f"\n--- 1. 音声を抽出中... ---")
     ydl_opts = {
@@ -40,7 +42,7 @@ def download_audio(youtube_url): # 👈 名前を download_audio に修正
         'outtmpl': 'temp_audio.%(ext)s',
     }
     with YoutubeDL(ydl_opts) as ydl:
-        ydl.download([youtube_url]) # 👈 引数名と合わせました
+        ydl.download([youtube_url])
     return "temp_audio.mp3"
 
 def process_long_audio(file_path):
@@ -96,12 +98,20 @@ def summarize_and_format(text):
 def save_to_supabase(url, summary_text):
     """Supabaseにデータを保存する"""
     print(f"--- 4. Supabaseに投稿中... ---")
+    
     parts = summary_text.split("[SEPARATOR]")
     
-    # AIの出力から各パーツを取り出す
-    title_val = parts[0].strip() if len(parts) > 0 else "Untitled"
-    three_line = parts[1].strip() if len(parts) > 1 else ""
-    detail = parts[2].strip() if len(parts) > 2 else ""
+    def clean_text(text, labels):
+        for label in labels:
+            text = re.sub(label, "", text, flags=re.IGNORECASE)
+        return text.replace("#", "").strip()
+
+    # ラベルを削除して純粋な中身だけ抽出
+    target_labels = [r"1\.\s*【タイトル】", r"2\.\s*【三行まとめ】", r"3\.\s*【詳細レポート.*】"]
+
+    title_val = clean_text(parts[0], target_labels) if len(parts) > 0 else "Untitled"
+    three_line = clean_text(parts[1], target_labels) if len(parts) > 1 else ""
+    detail = clean_text(parts[2], target_labels) if len(parts) > 2 else ""
 
     data = {
         "title": title_val,
@@ -110,29 +120,28 @@ def save_to_supabase(url, summary_text):
         "detail_report": detail
     }
     
-    # 指定したテーブル名にインサート
-    supabase.table("podcast_summaries").insert(data).execute()
-    print("✅ 投稿が完了しました！サイトを確認してください。")
+    res = supabase.table("podcast_summaries").insert(data).execute()
+    print(f"✅ 投稿が完了しました！作成されたID: {res.data[0]['id']}")
 
-# --- 3. メイン処理 ---
+# --- 4. メイン処理 ---
 if __name__ == "__main__":
-    # URLをターゲットの動画に変更
-    target_url = "https://www.youtube.com/watch?v=4Gmd5UTF4rk" 
+    # 📢 ここに要約したいYouTube動画のURLを入れてください
+    target_url = "https://www.youtube.com/watch?v=9FKIWm5l7TY" 
     
-    audio_file = download_audio(target_url)
+    audio_file = None
     try:
+        audio_file = download_audio(target_url)
         full_text = process_long_audio(audio_file)
         full_output = summarize_and_format(full_text)
         
-        # コンソールにも表示
-        print("\n=== ✨ 生成されたレポート ===\n")
-        print(full_output)
-        
-        # 投稿実行
+        # 保存実行
         save_to_supabase(target_url, full_output)
 
     except Exception as e:
         print(f"❌ エラーが発生しました: {e}")
+        
     finally:
-        if os.path.exists(audio_file):
+        # 一時ファイルの削除
+        if audio_file and os.path.exists(audio_file):
             os.remove(audio_file)
+            print("🧹 一時音声ファイルを削除しました。")

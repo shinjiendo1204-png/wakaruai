@@ -1,12 +1,10 @@
-// app/podcasts/page.tsx
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
-import { Mic2, ArrowRight, Calendar } from 'lucide-react';
+import { Mic2, ArrowRight, Calendar, CheckCircle2 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 export default async function PodcastListPage() {
-  // 1. Supabaseから最新順に取得
   const { data: posts } = await supabase
     .from('podcast_summaries')
     .select('*')
@@ -14,7 +12,7 @@ export default async function PodcastListPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
-      {/* ヘッダーセクション */}
+      {/* ヘッダー */}
       <div className="mb-16">
         <h1 className="text-4xl font-black text-slate-900 flex items-center gap-3 mb-4">
           <Mic2 className="text-blue-600" size={36} /> 海外Podcastテック要約
@@ -42,16 +40,20 @@ export default async function PodcastListPage() {
                 {post.title}
               </h2>
               
-              <div className="space-y-2 mb-8">
+              {/* 三行まとめエリア：ここを修正しました */}
+              <div className="space-y-3 mb-8 bg-slate-50/50 p-4 rounded-2xl border border-slate-50">
                 {post.three_line_summary ? (
                   post.three_line_summary
                     .split('\n')
-                    .filter((line: string) => line.trim() !== '') // 空行を除去
-                    .slice(0, 2)
-                    .map((line: string, i: number) => ( // 型を明示的に指定
-                      <p key={i} className="text-sm text-slate-500 font-medium line-clamp-1">
-                        {line.replace(/^[*-]\s*/, '• ')}
-                      </p>
+                    .filter((line: string) => line.trim() !== '') 
+                    .slice(0, 3) // 👈 2から3に変更
+                    .map((line: string, i: number) => ( 
+                      <div key={i} className="flex gap-2 items-start text-sm text-slate-600 leading-snug">
+                        <span className="text-blue-500 mt-0.5">●</span>
+                        <p className="font-bold">
+                          {line.replace(/^[*-]\s*/, '')}
+                        </p>
+                      </div>
                     ))
                 ) : (
                   <p className="text-sm text-slate-400 font-medium italic">要約を準備中...</p>
@@ -60,7 +62,7 @@ export default async function PodcastListPage() {
             </div>
 
             <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-              <span className="text-xs font-black text-blue-600 uppercase tracking-tighter">Read Deep Dive</span>
+              <span className="text-xs font-black text-blue-600 uppercase tracking-tighter">記事を読む</span>
               <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white group-hover:bg-blue-600 transition-colors">
                 <ArrowRight size={18} />
               </div>
