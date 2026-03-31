@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Sparkles, LayoutGrid, Newspaper, Search } from 'lucide-react';
+// Mic2 を追加インポート
+import { Sparkles, LayoutGrid, Newspaper, Mic2 } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -11,7 +12,9 @@ export default function Header() {
   const navItems = [
     { name: 'AI診断', href: '/diagnostic', icon: <Sparkles size={18} /> },
     { name: 'ツール一覧', href: '/tools', icon: <LayoutGrid size={18} /> },
-    { name: '世界のAI三行ニュース', href: '/news', icon: <Newspaper size={18} /> },
+    { name: '三行ニュース', href: '/news', icon: <Newspaper size={18} /> },
+    // ★新しく追加：Podcast要約
+    { name: 'Podcast要約', href: '/podcasts', icon: <Mic2 size={18} /> },
   ];
 
   return (
@@ -24,9 +27,8 @@ export default function Header() {
        {/* ロゴ */}
         <Link href="/" className="flex items-center gap-2 mr-4 group">
            <div className="bg-white p-0.5 rounded-lg border border-slate-200 group-hover:rotate-12 transition-transform overflow-hidden w-8 h-8 flex items-center justify-center">
-            {/* 虫眼鏡アイコンを img タグに差し替え */}
             <img 
-              src="/favicon.jpg" // publicフォルダに置いた画像パス
+              src="/favicon.jpg" 
               alt="ワカルAI ロゴ"
               className="w-full h-full object-cover rounded-md" 
             />
