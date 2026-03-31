@@ -37,8 +37,10 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* メインタイトル */}
-      <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-10 leading-[1.2] tracking-tight">
-        {post.title}
+      <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-10 leading-[1.1] tracking-tighter">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500">
+          {post.title}
+        </span>
       </h1>
 
       {/* 3行要約ボックス（デザイン強化版） */}
@@ -61,7 +63,11 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
         prose-h2:text-2xl prose-h2:border-l-4 prose-h2:border-blue-600 prose-h2:pl-4 prose-h2:mb-6
         prose-h3:text-xl prose-h3:mt-10
         prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium
-        prose-strong:text-slate-900 prose-strong:font-black">
+        prose-strong:text-slate-900 prose-strong:font-black
+        prose-img:rounded-[2rem] prose-img:shadow-2xl
+        prose-blockquote:border-l-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic prose-blockquote:font-bold
+        prose-code:text-blue-600 prose-code:bg-blue-50 prose-code:px-1 prose-code:rounded
+          ">
         <ReactMarkdown>{post.content_jp?.replace(/\\n/g, '\n')}</ReactMarkdown>
       </div>
 

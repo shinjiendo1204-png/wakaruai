@@ -8,6 +8,17 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const { data: tool } = await supabase.from('ai_tools').select('name, strength').eq('id', id).single();
+  
+  return {
+    title: `${tool?.name || 'ツール詳細'} | ワかるAI`,
+    description: tool?.strength || 'AIツールの詳細な特徴、料金、口コミを三行で解説。',
+  };
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -25,9 +36,38 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ id:
 
   if (!tool) notFound();
 
+  // --- ★追加：構造化データ（JSON-LD）の定義 ---
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": tool.name,
+    "description": tool.strength,
+    "applicationCategory": "MultimediaApplication", // カテゴリに合わせて変更可
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": tool.price_text?.includes('Free') ? "0" : "1", // 簡易的なフラグ
+      "priceCurrency": "JPY",
+    },
+    // レビューがある場合のみ評価データを追加
+    ...(reviews && reviews.length > 0 && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1),
+        "ratingCount": reviews.length,
+      }
+    })
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 pb-24 animate-in fade-in duration-700">
       
+      {/* --- ★追加：Google用構造化データ --- */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+    
       {/* 1. ナビゲーション */}
       <div className="flex justify-between items-center mb-12 border-b border-slate-100 pb-8">
         <Link href="/tools" className="inline-flex items-center gap-2 text-slate-400 font-bold hover:text-blue-600 transition-all hover:-translate-x-1">
@@ -100,7 +140,9 @@ export default async function ToolDetailPage({ params }: { params: Promise<{ id:
               <Zap className="text-blue-600" size={24} /> ツール詳細レビュー
             </h2>
             <div className="prose prose-slate prose-lg max-w-none">
-              <ReactMarkdown>{tool.description_jp?.replace(/\\n/g, '\n') || "詳細な解説をAIが生成中です。"}</ReactMarkdown>
+            <ReactMarkdown>
+              {tool.description_jp?.replace(/\\n/g, '\n')}
+            </ReactMarkdown>
             </div>
           </div>
 
