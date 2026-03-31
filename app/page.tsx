@@ -121,7 +121,58 @@ export default function LandingPage() {
             AI診断ツールを使う <ArrowRight size={20} />
           </Link>
         </div>
+      {/* メイン機能：2つの柱 セクションの終わり */}
       </section>
+
+      {/* ★ここに貼り付け★ */}
+      <section className="max-w-6xl mx-auto px-6 pb-24">
+        <div className="bg-slate-900 rounded-[3.5rem] p-8 md:p-16 text-white overflow-hidden relative group">
+          {/* 背景装飾 */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-[100px] rounded-full group-hover:bg-blue-600/30 transition-all duration-700"></div>
+          
+          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-4 py-2 rounded-full">
+                <Zap className="text-blue-400" size={16} />
+                <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest">Global Podcast Deep-Dive</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black leading-tight italic">
+                世界トップ層の<br />
+                <span className="text-blue-500 underline decoration-wavy underline-offset-8">「思考」</span>を学ぶ。
+              </h2>
+              <p className="text-slate-400 font-bold leading-relaxed text-lg">
+                Sam AltmanやJensen Huangなど、世界のビルダーたちがPodcastで語った内容を、簡潔かつ濃密なレポートへ凝縮。最先端の戦略をあなたの武器に。
+              </p>
+              <Link href="/podcasts">
+                <motion.button
+                  whileHover={{ x: 10 }}
+                  className="bg-white text-slate-900 px-10 py-5 rounded-2xl text-lg font-black flex items-center gap-3 shadow-xl hover:bg-blue-50 transition-all"
+                >
+                  Podcast要約を読む <ArrowRight size={20} />
+                </motion.button>
+              </Link>
+            </div>
+            
+            {/* 視覚的な演出：Podcastカードのプレビュー */}
+            <div className="hidden md:block relative">
+              <div className="bg-white/5 border border-white/10 p-6 rounded-[2.5rem] backdrop-blur-sm transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                <div className="w-full aspect-video bg-slate-800 rounded-2xl mb-4 flex items-center justify-center border border-white/5 overflow-hidden">
+                  <div className="text-blue-500/30 animate-pulse">
+                    <Zap size={80} />
+                  </div>
+                </div>
+                <div className="h-4 w-3/4 bg-white/20 rounded-full mb-3"></div>
+                <div className="h-4 w-1/2 bg-white/10 rounded-full"></div>
+              </div>
+              {/* 重なり演出 */}
+              <div className="absolute -bottom-6 -left-6 bg-blue-600 p-6 rounded-[2rem] shadow-2xl transform -rotate-6 group-hover:-rotate-3 transition-transform duration-500">
+                <p className="text-white font-black text-xs">NEW REPORT AVAILABLE</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* ★ここまで★ */}
 
       {/* 信頼・スピードの証 */}
       <section className="bg-slate-900 text-white py-24 px-6 overflow-hidden relative">
