@@ -88,7 +88,7 @@ export default function PodcastListPage() {
               </div>
             </div>
             <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-              <span className="text-xs font-black text-blue-600 uppercase tracking-tighter">Deep Dive を読む</span>
+              <span className="text-xs font-black text-blue-600 uppercase tracking-tighter">記事を読む</span>
               <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white group-hover:bg-blue-600 transition-all">
                 <ArrowRight size={18} />
               </div>
