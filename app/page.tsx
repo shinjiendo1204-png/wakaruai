@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { Sparkles, Zap, Newspaper, ArrowRight, Search, LayoutGrid } from 'lucide-react';
+import JapanMarketingBanner from '@/components/JapanMarketingBanner';
 
 export default function LandingPage() {
   const [latestNews, setLatestNews] = useState<any[]>([]);
@@ -197,6 +198,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <JapanMarketingBanner />
     </div>
   );
 }
