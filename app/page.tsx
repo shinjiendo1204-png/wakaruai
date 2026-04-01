@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
-import { Sparkles, Zap, Newspaper, ArrowRight, Search, LayoutGrid } from 'lucide-react';
-import JapanMarketingBanner from '@/components/JapanMarketingBanner';
+import { Sparkles, Zap, Newspaper, ArrowRight, Search, ShoppingCart, BookOpen, Star } from 'lucide-react';
 
 export default function LandingPage() {
   const [latestNews, setLatestNews] = useState<any[]>([]);
@@ -25,9 +24,10 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100">
-      {/* ヒーローセクション：AIを「追う」から「使いこなす」へ */}
-      <section className="max-w-5xl mx-auto pt-32 pb-20 px-6 text-center">
-        <motion.div 
+
+      {/* HERO */}
+      <section className="max-w-5xl mx-auto pt-32 pb-16 px-6 text-center">
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="inline-flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-full mb-8 shadow-sm"
@@ -36,26 +36,24 @@ export default function LandingPage() {
           <span className="text-xs font-black text-slate-600 uppercase tracking-widest">The All-in-One AI Hub</span>
         </motion.div>
 
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }} 
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          /* leading-tight (1.25) くらいに広げ、mb-12 で下の文章との距離も確保 */
           className="text-6xl md:text-8xl font-black tracking-tighter mb-12 leading-[1.15] md:leading-[1.1]"
         >
           AIの「今」を<br />
           <span className="text-blue-600 italic">最短距離</span>で。
         </motion.h1>
 
-        <motion.p 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          /* text-xl なら leading-relaxed (1.625) が黄金比です */
-          className="text-xl md:text-2xl text-slate-500 mb-16 max-w-3xl mx-auto leading-relaxed"
+          className="text-xl md:text-2xl text-slate-500 mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          膨大な海外ニュースも、100種類以上のAIツールも。<br className="hidden md:block" />
-          すべてを簡潔に。あなたの意思決定を加速させる<br/>AI総合プラットフォーム。
+          海外AIニュースを毎日3行で。100以上のAIツール辞書。<br className="hidden md:block" />
+          そして、日本市場を攻略するAIプロンプト集。
         </motion.p>
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
@@ -78,9 +76,56 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* メイン機能：2つの柱 */}
+      {/* FEATURED PRODUCT BANNER */}
+      <section className="max-w-5xl mx-auto px-6 pb-16">
+        <motion.a
+          href="https://japan-marketing-lp.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="block group"
+        >
+          <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] p-8 md:p-12 border border-slate-800 hover:border-blue-500 transition-all duration-300 shadow-2xl">
+            <div className="absolute top-0 right-0 text-[200px] leading-none opacity-[0.06] select-none pointer-events-none">🇯🇵</div>
+            <div className="absolute top-4 right-4">
+              <span className="bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">New</span>
+            </div>
+            <div className="relative flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  {[1,2,3,4,5].map(i => <Star key={i} size={14} className="text-yellow-400 fill-yellow-400" />)}
+                  <span className="text-slate-400 text-xs ml-1">Early adopters</span>
+                </div>
+                <h3 className="text-white text-2xl md:text-3xl font-black mb-3 leading-tight">
+                  日本市場を攻略する<br className="hidden md:block" />
+                  AIプロンプト集 50選
+                </h3>
+                <p className="text-slate-400 text-sm md:text-base max-w-lg mb-4">
+                  海外マーケターが日本語の壁を越えるための、コピペで使えるAIワークフロー50本。リサーチ・LP・CS・集客まで全網羅。
+                </p>
+                <div className="flex items-center gap-3">
+                  <span className="text-white font-black text-2xl">$47</span>
+                  <span className="text-slate-500 line-through text-sm">$97</span>
+                  <span className="bg-red-600/20 text-red-400 text-xs font-bold px-2 py-1 rounded-full">60% OFF</span>
+                </div>
+              </div>
+              <div className="flex-shrink-0">
+                <div className="bg-blue-600 group-hover:bg-blue-500 transition-colors text-white font-black px-8 py-4 rounded-2xl flex items-center gap-3 text-base whitespace-nowrap shadow-lg shadow-blue-600/30">
+                  <ShoppingCart size={18} />
+                  今すぐ購入
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.a>
+      </section>
+
+      {/* FEATURES GRID */}
       <section className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 px-6 pb-24">
-        {/* 左側：ニュース */}
+        {/* ニュース */}
         <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm group">
           <div className="bg-blue-50 text-blue-600 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
             <Newspaper size={24} />
@@ -94,112 +139,54 @@ export default function LandingPage() {
             {latestNews.slice(0, 2).map((item) => (
               <Link key={item.id} href={`/news/${item.id}`} className="block p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-blue-200 hover:bg-white transition-all">
                 <span className="text-[10px] font-black text-blue-500 uppercase">Latest News</span>
-                <p className="font-bold text-sm line-clamp-1">{item.title}</p>
+                <p className="font-bold text-sm line-clamp-1 mt-1">{item.title}</p>
               </Link>
             ))}
           </div>
-          <Link href="/news" className="font-black text-blue-600 flex items-center gap-2 group-hover:gap-4 transition-all">
-            ニュースセンターへ <ArrowRight size={20} />
+          <Link href="/news" className="inline-flex items-center gap-2 text-blue-600 font-black hover:gap-4 transition-all">
+            ニュースセンターへ <ArrowRight size={18} />
           </Link>
         </div>
 
-        {/* 右側：ツール選定 */}
+        {/* AI診断 */}
         <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm group">
-          <div className="bg-yellow-50 text-yellow-600 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-            <LayoutGrid size={24} />
+          <div className="bg-purple-50 text-purple-600 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
+            <Sparkles size={24} />
           </div>
           <h3 className="text-2xl font-black mb-4">最適なAIツールを即座に。</h3>
           <p className="text-slate-500 mb-8 font-medium leading-relaxed">
-            100種類以上のAIツール・辞書を完備。
-            目的から逆引きしたり、診断形式であなたに最適なパートナーを見つけます。
+            100種類以上のAIツール辞書を完備。目的から逆引きしたり、
+            診断形式であなたに最適なパートナーを見つけます。
           </p>
           <div className="flex flex-wrap gap-2 mb-8">
-            {['画像生成', '文章作成', '動画編集', '業務自動化'].map(tag => (
-              <span key={tag} className="px-4 py-2 bg-slate-50 rounded-full text-xs font-bold text-slate-400">#{tag}</span>
+            {['#画像生成', '#文章作成', '#動画編集', '#業務自動化', '#コード生成'].map(tag => (
+              <span key={tag} className="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full">{tag}</span>
             ))}
           </div>
-          <Link href="/diagnostic" className="font-black text-blue-600 flex items-center gap-2 group-hover:gap-4 transition-all">
-            AI診断ツールを使う <ArrowRight size={20} />
+          <Link href="/diagnostic" className="inline-flex items-center gap-2 text-purple-600 font-black hover:gap-4 transition-all">
+            AI診断ツールを使う <ArrowRight size={18} />
           </Link>
         </div>
-      {/* メイン機能：2つの柱 セクションの終わり */}
       </section>
 
-      {/* ★ここに貼り付け★ */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="bg-slate-900 rounded-[3.5rem] p-8 md:p-16 text-white overflow-hidden relative group">
-          {/* 背景装飾 */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-[100px] rounded-full group-hover:bg-blue-600/30 transition-all duration-700"></div>
-          
-          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 bg-blue-600/20 border border-blue-500/30 px-4 py-2 rounded-full">
-                <Zap className="text-blue-400" size={16} />
-                <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest">Global Podcast Deep-Dive</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-black leading-tight italic">
-                世界トップ層の<br />
-                <span className="text-blue-500 underline decoration-wavy underline-offset-8">「思考」</span>を学ぶ。
-              </h2>
-              <p className="text-slate-400 font-bold leading-relaxed text-lg">
-                Sam AltmanやJensen Huangなど、世界のビルダーたちがPodcastで語った内容を、簡潔かつ濃密なレポートへ凝縮。最先端の戦略をあなたの武器に。
-              </p>
-              <Link href="/podcasts">
-                <motion.button
-                  whileHover={{ x: 10 }}
-                  className="bg-white text-slate-900 px-10 py-5 rounded-2xl text-lg font-black flex items-center gap-3 shadow-xl hover:bg-blue-50 transition-all"
-                >
-                  Podcast要約を読む <ArrowRight size={20} />
-                </motion.button>
-              </Link>
-            </div>
-            
-            {/* 視覚的な演出：Podcastカードのプレビュー */}
-            <div className="hidden md:block relative">
-              <div className="bg-white/5 border border-white/10 p-6 rounded-[2.5rem] backdrop-blur-sm transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                <div className="w-full aspect-video bg-slate-800 rounded-2xl mb-4 flex items-center justify-center border border-white/5 overflow-hidden">
-                  <div className="text-blue-500/30 animate-pulse">
-                    <Zap size={80} />
-                  </div>
-                </div>
-                <div className="h-4 w-3/4 bg-white/20 rounded-full mb-3"></div>
-                <div className="h-4 w-1/2 bg-white/10 rounded-full"></div>
-              </div>
-              {/* 重なり演出 */}
-              <div className="absolute -bottom-6 -left-6 bg-blue-600 p-6 rounded-[2rem] shadow-2xl transform -rotate-6 group-hover:-rotate-3 transition-transform duration-500">
-                <p className="text-white font-black text-xs">NEW REPORT AVAILABLE</p>
-              </div>
-            </div>
+      {/* STATS */}
+      <section className="bg-white border-t border-b border-slate-100 py-16 mb-16">
+        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 px-6 text-center">
+          <div>
+            <p className="text-4xl font-black text-blue-600 mb-2">10 Sec</p>
+            <p className="text-sm font-bold text-slate-400">診断による最速の選定</p>
           </div>
-        </div>
-      </section>
-      {/* ★ここまで★ */}
-
-      {/* 信頼・スピードの証 */}
-      <section className="bg-slate-900 text-white py-24 px-6 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/20 blur-[120px] rounded-full"></div>
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-black mb-16 leading-tight">
-            AIで迷う時間を、<br /><span className="text-blue-500">AIを動かす時間</span>に変える。
-          </h2>
-          <div className="grid md:grid-cols-3 gap-12">
-            <div>
-              <p className="text-4xl font-black text-blue-500 mb-2">10 Sec</p>
-              <p className="text-sm font-bold text-slate-400">診断による最速の選定</p>
-            </div>
-            <div>
-              <p className="text-4xl font-black text-blue-500 mb-2">3 Lines</p>
-              <p className="text-sm font-bold text-slate-400">ニュース要約による最速の理解</p>
-            </div>
-            <div>
-              <p className="text-4xl font-black text-blue-500 mb-2">100+</p>
-              <p className="text-sm font-bold text-slate-400">網羅されたAIツール辞書</p>
-            </div>
+          <div>
+            <p className="text-4xl font-black text-blue-600 mb-2">3 Lines</p>
+            <p className="text-sm font-bold text-slate-400">ニュース要約による最速の理解</p>
+          </div>
+          <div>
+            <p className="text-4xl font-black text-blue-600 mb-2">100+</p>
+            <p className="text-sm font-bold text-slate-400">網羅されたAIツール辞書</p>
           </div>
         </div>
       </section>
 
-      <JapanMarketingBanner />
     </div>
   );
 }
