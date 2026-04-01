@@ -177,8 +177,8 @@ const handleReset = () => {
       title: '予算のイメージは？',
       options: [
         { label: 'まずは無料で使いたい', value: 'free' },
-        { label: '月3,000円程度まで（低）', value: 'low' },
-        { label: '月7,000円程度まで（中）', value: 'high' },
+        { label: '月3,000円程度までなら', value: 'low' },
+        { label: '金額よりも高品質重視', value: 'high' },
       ]
     },
     {
