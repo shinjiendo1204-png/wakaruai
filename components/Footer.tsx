@@ -41,7 +41,7 @@ export default function Footer() {
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-            <a href="mailto:support@wakaruai.net" className="hover:text-white transition-colors">support@wakaruai.net</a>
+            
           </div>
         </div>
       </div>
