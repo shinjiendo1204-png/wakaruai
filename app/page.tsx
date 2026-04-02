@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
-import { Sparkles, Zap, Newspaper, ArrowRight, Search, ShoppingCart, BookOpen, Star } from 'lucide-react';
+import { Newspaper, Search, ArrowRight, ShoppingCart, Star, Zap, BookOpen } from 'lucide-react';
 
-export default function LandingPage() {
+export default function HomePage() {
   const [latestNews, setLatestNews] = useState<any[]>([]);
 
   useEffect(() => {
@@ -23,167 +23,165 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
 
       {/* HERO */}
-      <section className="max-w-5xl mx-auto pt-32 pb-16 px-6 text-center">
+      <section className="max-w-5xl mx-auto pt-24 pb-16 px-6 text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="inline-flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-full mb-8 shadow-sm"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center gap-2 bg-red-50 border border-red-100 text-red-600 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-8"
         >
-          <Sparkles className="text-blue-600" size={16} />
-          <span className="text-xs font-black text-slate-600 uppercase tracking-widest">The All-in-One AI Hub</span>
+          🇯🇵 Japan Market Intelligence
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-6xl md:text-8xl font-black tracking-tighter mb-12 leading-[1.15] md:leading-[1.1]"
+          transition={{ duration: 0.7 }}
+          className="text-5xl md:text-7xl font-black tracking-tighter mb-8 leading-tight"
         >
-          AIの「今」を<br />
-          <span className="text-blue-600 italic">最短距離</span>で。
+          Break Into Japan.<br />
+          <span className="text-blue-600">With AI.</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-xl md:text-2xl text-slate-500 mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed"
         >
-          海外AIニュースを毎日3行で。100以上のAIツール辞書。<br className="hidden md:block" />
-          そして、日本市場を攻略するAIプロンプト集。
+          Daily AI news from global sources. 100+ AI tool directory.
+          And the playbooks you need to enter Japan&apos;s $4T market.
         </motion.p>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-          <Link href="/news">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="https://japan-marketing-lp.vercel.app" target="_blank">
             <motion.button
-              whileHover={{ y: -4 }}
-              className="bg-slate-900 text-white px-10 py-5 rounded-2xl text-lg font-black shadow-xl hover:bg-slate-800 transition-all flex items-center gap-3 w-full md:w-auto"
+              whileHover={{ y: -3 }}
+              className="bg-red-600 text-white px-8 py-4 rounded-xl text-base font-black shadow-lg hover:bg-red-500 transition-all flex items-center gap-3"
             >
-              最新ニュースを読む <Newspaper size={20} />
+              <ShoppingCart size={18} />
+              Get the Japan Playbook — $47
             </motion.button>
           </Link>
-          <Link href="/diagnostic">
+          <Link href="/news">
             <motion.button
-              whileHover={{ y: -4 }}
-              className="bg-white text-slate-900 border-2 border-slate-200 px-10 py-5 rounded-2xl text-lg font-black hover:border-blue-600 transition-all flex items-center gap-3 w-full md:w-auto"
+              whileHover={{ y: -3 }}
+              className="bg-white text-slate-900 border-2 border-slate-200 px-8 py-4 rounded-xl text-base font-black hover:border-slate-400 transition-all flex items-center gap-3"
             >
-              自分に合うAIを探す <Search size={20} />
+              <Newspaper size={18} />
+              Read AI News
             </motion.button>
           </Link>
         </div>
       </section>
 
-      {/* FEATURED PRODUCT BANNER */}
-      <section className="max-w-5xl mx-auto px-6 pb-16">
+      {/* PRODUCTS */}
+      <section className="max-w-5xl mx-auto px-6 pb-16 grid md:grid-cols-2 gap-6">
+        {/* Main product */}
         <motion.a
           href="https://japan-marketing-lp.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.2 }}
           className="block group"
         >
-          <div className="relative overflow-hidden bg-slate-900 rounded-[2rem] p-8 md:p-12 border border-slate-800 hover:border-blue-500 transition-all duration-300 shadow-2xl">
-            <div className="absolute top-0 right-0 text-[200px] leading-none opacity-[0.06] select-none pointer-events-none">🇯🇵</div>
-            <div className="absolute top-4 right-4">
-              <span className="bg-red-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">New</span>
+          <div className="relative overflow-hidden bg-slate-900 rounded-2xl p-8 border border-slate-800 hover:border-red-500 transition-all h-full">
+            <div className="absolute top-0 right-0 text-[120px] opacity-[0.06] select-none">🇯🇵</div>
+            <div className="mb-4">
+              <span className="bg-red-600 text-white text-xs font-black px-2 py-1 rounded uppercase tracking-wide">Bestseller</span>
             </div>
-            <div className="relative flex flex-col md:flex-row items-start md:items-center gap-6 justify-between">
+            <div className="flex gap-1 mb-3">
+              {[1,2,3,4,5].map(i => <Star key={i} size={12} className="text-yellow-400 fill-yellow-400" />)}
+            </div>
+            <h3 className="text-white text-xl font-black mb-2">Speak Japan: 50 AI Workflows</h3>
+            <p className="text-slate-400 text-sm mb-6">Replace your Japanese marketing team with AI. Market research, content, customer support, and launch playbook.</p>
+            <div className="flex items-center justify-between">
               <div>
-                <div className="flex items-center gap-2 mb-3">
-                  {[1,2,3,4,5].map(i => <Star key={i} size={14} className="text-yellow-400 fill-yellow-400" />)}
-                  <span className="text-slate-400 text-xs ml-1">Early adopters</span>
-                </div>
-                <h3 className="text-white text-2xl md:text-3xl font-black mb-3 leading-tight">
-                  日本市場を攻略する<br className="hidden md:block" />
-                  AIプロンプト集 50選
-                </h3>
-                <p className="text-slate-400 text-sm md:text-base max-w-lg mb-4">
-                  海外マーケターが日本語の壁を越えるための、コピペで使えるAIワークフロー50本。リサーチ・LP・CS・集客まで全網羅。
-                </p>
-                <div className="flex items-center gap-3">
-                  <span className="text-white font-black text-2xl">$47</span>
-                  <span className="text-slate-500 line-through text-sm">$97</span>
-                  <span className="bg-red-600/20 text-red-400 text-xs font-bold px-2 py-1 rounded-full">60% OFF</span>
-                </div>
+                <span className="text-white font-black text-2xl">$47</span>
+                <span className="text-slate-600 line-through text-sm ml-2">$97</span>
               </div>
-              <div className="flex-shrink-0">
-                <div className="bg-blue-600 group-hover:bg-blue-500 transition-colors text-white font-black px-8 py-4 rounded-2xl flex items-center gap-3 text-base whitespace-nowrap shadow-lg shadow-blue-600/30">
-                  <ShoppingCart size={18} />
-                  今すぐ購入
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </div>
+              <div className="bg-red-600 group-hover:bg-red-500 text-white text-sm font-black px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                Buy Now <ArrowRight size={14} />
+              </div>
+            </div>
+          </div>
+        </motion.a>
+
+        {/* Starter kit */}
+        <motion.a
+          href="https://speakjapan.gumroad.com/l/mzldw"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="block group"
+        >
+          <div className="relative overflow-hidden bg-white rounded-2xl p-8 border-2 border-slate-200 hover:border-blue-400 transition-all h-full">
+            <div className="mb-4">
+              <span className="bg-blue-100 text-blue-700 text-xs font-black px-2 py-1 rounded uppercase tracking-wide">Quick Start</span>
+            </div>
+            <BookOpen size={28} className="text-blue-600 mb-3" />
+            <h3 className="text-slate-900 text-xl font-black mb-2">Japan Market Starter Kit</h3>
+            <p className="text-slate-500 text-sm mb-6">5 essential cheat sheets. Consumer psychology, seasonal calendar, platform guide, email templates & launch checklist.</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-slate-900 font-black text-2xl">$9</span>
+                <span className="text-slate-400 text-xs ml-2">5 cheat sheets</span>
+              </div>
+              <div className="bg-blue-600 group-hover:bg-blue-500 text-white text-sm font-black px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                Buy Now <ArrowRight size={14} />
               </div>
             </div>
           </div>
         </motion.a>
       </section>
 
-      {/* FEATURES GRID */}
-      <section className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 px-6 pb-24">
-        {/* ニュース */}
-        <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm group">
-          <div className="bg-blue-50 text-blue-600 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-            <Newspaper size={24} />
-          </div>
-          <h3 className="text-2xl font-black mb-4">全世界のAI動向を三行で。</h3>
-          <p className="text-slate-500 mb-8 font-medium leading-relaxed">
-            TechCrunch、The Decoderなど、主要な海外メディアからAI情報だけを抽出。
-            AIが要約し、日本語で毎日お届けします。
-          </p>
-          <div className="space-y-4 mb-8">
-            {latestNews.slice(0, 2).map((item) => (
-              <Link key={item.id} href={`/news/${item.id}`} className="block p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-blue-200 hover:bg-white transition-all">
-                <span className="text-[10px] font-black text-blue-500 uppercase">Latest News</span>
-                <p className="font-bold text-sm line-clamp-1 mt-1">{item.title}</p>
-              </Link>
-            ))}
-          </div>
-          <Link href="/news" className="inline-flex items-center gap-2 text-blue-600 font-black hover:gap-4 transition-all">
-            ニュースセンターへ <ArrowRight size={18} />
+      {/* FEATURES */}
+      <section className="max-w-5xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-6">
+        <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+          <Newspaper size={24} className="text-blue-600 mb-4" />
+          <h3 className="text-lg font-black mb-2">Daily AI News</h3>
+          <p className="text-slate-500 text-sm mb-4">Global AI news from TechCrunch, The Decoder and more — summarized in 3 lines daily.</p>
+          {latestNews.slice(0, 2).map((item) => (
+            <Link key={item.id} href={`/news/${item.id}`} className="block text-xs text-slate-600 hover:text-blue-600 mb-1 line-clamp-1 transition-colors">
+              → {item.title}
+            </Link>
+          ))}
+          <Link href="/news" className="text-blue-600 font-bold text-sm flex items-center gap-1 mt-3 hover:gap-2 transition-all">
+            All news <ArrowRight size={14} />
           </Link>
         </div>
 
-        {/* AI診断 */}
-        <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm group">
-          <div className="bg-purple-50 text-purple-600 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-            <Sparkles size={24} />
-          </div>
-          <h3 className="text-2xl font-black mb-4">最適なAIツールを即座に。</h3>
-          <p className="text-slate-500 mb-8 font-medium leading-relaxed">
-            100種類以上のAIツール辞書を完備。目的から逆引きしたり、
-            診断形式であなたに最適なパートナーを見つけます。
-          </p>
-          <div className="flex flex-wrap gap-2 mb-8">
-            {['#画像生成', '#文章作成', '#動画編集', '#業務自動化', '#コード生成'].map(tag => (
-              <span key={tag} className="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full">{tag}</span>
+        <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+          <Search size={24} className="text-purple-600 mb-4" />
+          <h3 className="text-lg font-black mb-2">100+ AI Tools</h3>
+          <p className="text-slate-500 text-sm mb-4">Find the right AI tool for your job in 10 seconds. Image gen, writing, video, automation and more.</p>
+          <div className="flex flex-wrap gap-1 mb-3">
+            {['#image', '#writing', '#video', '#code'].map(t => (
+              <span key={t} className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">{t}</span>
             ))}
           </div>
-          <Link href="/diagnostic" className="inline-flex items-center gap-2 text-purple-600 font-black hover:gap-4 transition-all">
-            AI診断ツールを使う <ArrowRight size={18} />
+          <Link href="/diagnostic" className="text-purple-600 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all">
+            Find your AI <ArrowRight size={14} />
           </Link>
         </div>
-      </section>
 
-      {/* STATS */}
-      <section className="bg-white border-t border-b border-slate-100 py-16 mb-16">
-        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-8 px-6 text-center">
-          <div>
-            <p className="text-4xl font-black text-blue-600 mb-2">10 Sec</p>
-            <p className="text-sm font-bold text-slate-400">診断による最速の選定</p>
-          </div>
-          <div>
-            <p className="text-4xl font-black text-blue-600 mb-2">3 Lines</p>
-            <p className="text-sm font-bold text-slate-400">ニュース要約による最速の理解</p>
-          </div>
-          <div>
-            <p className="text-4xl font-black text-blue-600 mb-2">100+</p>
-            <p className="text-sm font-bold text-slate-400">網羅されたAIツール辞書</p>
-          </div>
+        <div className="bg-slate-900 p-8 rounded-2xl">
+          <Zap size={24} className="text-yellow-400 mb-4" />
+          <h3 className="text-lg font-black text-white mb-2">Japan Playbooks</h3>
+          <p className="text-slate-400 text-sm mb-4">Ready-to-use AI prompts for every Japan marketing use case. No Japanese team needed.</p>
+          <Link
+            href="https://japan-marketing-lp.vercel.app"
+            target="_blank"
+            className="text-yellow-400 font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all"
+          >
+            See the playbook <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 

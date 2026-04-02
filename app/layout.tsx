@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Script from 'next/script'; // ✅ これが必要！
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,16 +16,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ワカルAI",
-  description: "AIの「今」を最短距離で。",
+  title: "WAKARUAI — Japan Market Intelligence for Global Marketers",
+  description: "AI tools, news, and playbooks for foreign marketers entering Japan. Break the language barrier with AI.",
+  openGraph: {
+    title: "WAKARUAI — Japan Market Intelligence",
+    description: "AI-powered resources for entering the Japanese market.",
+    url: "https://wakaruai.net",
+    siteName: "WAKARUAI",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja">
-      {/* Google Analytics は body のすぐ下に入れるのが一般的です */}
+    <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}>
-        {/* ✅ Google Analytics 設定 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-ZYK8KKF2Y2"
           strategy="afterInteractive"
@@ -38,13 +44,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-ZYK8KKF2Y2');
           `}
         </Script>
-
         <Header />
-        
         <main className="pt-24 min-h-screen">
           {children}
         </main>
-
         <Footer />
       </body>
     </html>
